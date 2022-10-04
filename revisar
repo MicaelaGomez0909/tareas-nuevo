@@ -1,0 +1,113 @@
+using System.Security.Cryptography.X509Certificates;
+using System.Text.Json;
+
+List<tareas> ListaTareas = new List<tareas>();
+ListaTareas.Add(new tareas());
+ListaTareas.Add(new tareas());
+ListaTareas.Add(new tareas());
+ListaTareas.Add(new tareas());
+
+
+int opcion = 0;
+Console.WriteLine("Menu de opciones");
+Console.WriteLine("Ingrese 1 para agregar tarea");
+Console.WriteLine("Ingrese 2 para mostrar lista de tareas");
+Console.WriteLine("Ingrese 3 para mostrar lista de tareas");
+Console.WriteLine("Ingrese 4 para modificar lista de tareas");
+Console.WriteLine("Ingrese 5 para eliminar elemento de lista de tareas");
+
+opcion = Convert.ToInt32(Console.ReadLine());
+
+
+
+switch (opcion)
+{
+    case 1:
+        ListaTareas.Add(new tareas());
+    case 2:
+        foreach (tareas est in ListaTareas)
+        {
+            
+            est.mostrar();
+        }
+        break;
+    case 3:
+        string titulo = "";
+        Console.WriteLine("Ingrese titulo de tarea que desea eliminar");
+        titulo = Console.ReadLine();
+
+
+        foreach (tareas est in ListaTareas)
+        {
+            if (titulo == est.gettitulo())
+            {
+                ListaEstudiantes.Remove(est);
+                Console.WriteLine("Estudiante eliminado");
+                return;
+            }
+        }
+        break;
+}
+
+/*var json=JsonSerializer.Serialize(ListaPersonas);
+Console.WriteLine(json);
+List<persona> nueva;
+string ruta = "D://texto.txt";
+File.WriteAllText(ruta, json);
+string carga =  File.ReadAllText(ruta);
+nueva= JsonSerializer.Deserialize<List<persona>>(carga);
+
+foreach (var item in nueva)
+{
+    Console.WriteLine(item.nombre+ " "+ item.apellido +" "+item.edad+ "\n");
+}*/
+
+
+class tareas
+{
+   
+    public string titulo { get; set; }
+    public string descripcion { get; set; }
+    public int fecha { get; set; }
+
+    public bool finalizado { get; set; }
+
+    public tareas()
+    {
+        Console.WriteLine("\nIngrese titulo");
+        this.titulo = Console.ReadLine();
+        Console.WriteLine("Ingrese descripcion");
+        this.descripcion = Console.ReadLine();
+        Console.WriteLine("Ingrese fecha");
+        this.fecha = Convert.ToInt32(Console.ReadLine());
+        Console.WriteLine("Ingrese estado 1 finalizado o 0 en curso");
+        int aux = Convert.ToInt32(Console.ReadLine());
+        if (aux == 1)
+        {
+            this.finalizado = true;
+        }
+        else { this.finalizado = false; }
+        
+    }
+
+    public tareas( string titulo, string descripcion, int fecha, bool finalizado)
+    {
+        this.titulo = titulo;
+        this.descripcion = descripcion;
+        this.fecha = fecha;
+        this.finalizado = finalizado;
+    }
+
+  
+    static void guardar()
+    {
+        var json = JsonSerializer.Serialize();
+    }
+
+    public void mostrar()
+    {
+        Console.WriteLine("Titulo: "+ this.titulo+ "Descripcion: "+this.descripcion+" Fecha: "+ this.fecha);
+    }
+
+
+}
