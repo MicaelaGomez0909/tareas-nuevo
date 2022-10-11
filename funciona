@@ -1,0 +1,141 @@
+using System.Runtime.Intrinsics.X86;
+using System.Security.Cryptography.X509Certificates;
+using System.Text.Json;
+
+File.ReadAllText("D://texto.txt");
+List<tareas> ListaTareas = new List<tareas>();
+
+
+int opcion = 0;
+
+static void guardar(List <tareas> ListaTareas)
+{
+    var json = JsonSerializer.Serialize(ListaTareas);
+    Console.WriteLine(json);
+    string ruta = "D://texto.txt";
+    File.WriteAllText(ruta, json);
+}
+
+
+do
+{
+   
+    Console.WriteLine("\n                                    Menu de opciones");
+    Console.WriteLine("\n                                Ingrese 1 para agregar tarea");
+    Console.WriteLine("                                Ingrese 2 para mostrar lista de tareas");
+    Console.WriteLine("                                Ingrese 3 para modificar tarea de la lista");
+    Console.WriteLine("                                Ingrese 4 para eliminar tarea de la lista");
+    Console.WriteLine("                                Ingrese 5 para finalizar");
+    opcion = Convert.ToInt32(Console.ReadLine());
+    switch (opcion)
+    {
+        case 1:
+            ListaTareas.Add(new tareas());
+
+            guardar(ListaTareas);
+
+            break;
+        case 2:
+            foreach (tareas tar in ListaTareas)
+            {
+
+                tar.mostrar();
+            }
+            break;
+        case 3:
+            string titulo = "";
+            Console.WriteLine("Ingrese titulo a modificar: ");
+            titulo = Console.ReadLine();
+
+
+            foreach (tareas tar in ListaTareas)
+            {
+                if (titulo == tar.titulo)
+                {
+                    Console.WriteLine("Ingrese nueva descripcion: ");
+                    tar.descripcion = Console.ReadLine();
+                    Console.WriteLine("Ingrese nueva fecha: ");
+                    tar.fecha = Console.ReadLine();
+                    Console.WriteLine("Ingrese nuevo estado (1:finalizado - 0:en curso) : ");
+                    int aux = Convert.ToInt32(Console.ReadLine());
+                    if (aux == 1)
+                    {
+                        tar.finalizado = true;
+                    }
+                    else { tar.finalizado = false; }
+                   
+                }
+                else { Console.WriteLine("Titulo no existe"); }
+            }
+            guardar(ListaTareas);
+            break;
+        case 4:
+            string tituloAux = "";
+            Console.WriteLine("Ingrese titulo de tarea que desea eliminar");
+            tituloAux = Console.ReadLine();
+
+
+            foreach (tareas tar in ListaTareas)
+            {
+                if (tituloAux == tar.titulo)
+                {
+                    ListaTareas.Remove(tar);
+                    Console.WriteLine("Tarea eliminada");
+                    break;
+                }
+            }
+            guardar(ListaTareas);
+            break;
+     
+
+    }
+}
+while (opcion != 5) ;
+
+
+
+
+class tareas
+{
+
+    public string titulo { get; set; }
+    public string descripcion { get; set; }
+    public string fecha { get; set; }
+    public bool finalizado { get; set; }
+
+    public tareas()
+    {
+        Console.WriteLine("\nIngrese titulo");
+        this.titulo = Console.ReadLine();
+        Console.WriteLine("Ingrese descripcion");
+        this.descripcion = Console.ReadLine();
+        Console.WriteLine("Ingrese fecha");
+        this.fecha = Console.ReadLine();
+        Console.WriteLine("Ingrese estado 1 finalizado o 0 en curso");
+        int aux = Convert.ToInt32(Console.ReadLine());
+        if (aux == 1)
+        {
+            this.finalizado = true;
+        }
+        else { this.finalizado = false; }
+
+    }
+
+    public tareas(string titulo, string descripcion, string fecha, bool finalizado)
+    {
+        this.titulo = titulo;
+        this.descripcion = descripcion;
+        this.fecha = fecha;
+        this.finalizado = finalizado;
+    }
+
+    public void mostrar()
+    {
+        Console.WriteLine(" \n Titulo: " + this.titulo);
+        Console.WriteLine("Descripcion: " + this.descripcion);
+        Console.WriteLine("Fecha: " + this.fecha);
+        Console.WriteLine("Finalizado: " + this.finalizado);
+    }
+
+  
+}
